@@ -84,8 +84,8 @@ int main(int argc, char **argv) {
     sem_init(&rwsem, 0, 0);
 
     // 连接服务器成功，启动接收子线程
-    std::thread readTask(readTaskHandler, clientfd); // pthread_create
-    readTask.detach();                               // pthread_detach
+    std::thread readTask(readTaskHandler, clientfd); 
+    readTask.detach();
 
     // main线程用于接收用户输入，负责发送数据
     for (;;) {
@@ -100,9 +100,7 @@ int main(int argc, char **argv) {
         cin >> choice;
         cin.get(); // 读掉缓冲区残留的回车
 
-        switch (choice) {
-        case 1: // login业务
-        {
+        if (choice == 1) { // login业务
             int id = 0;
             char pwd[50] = {0};
             cout << "userid:";
@@ -131,10 +129,7 @@ int main(int argc, char **argv) {
                 isMainMenuRunning = true;
                 mainMenu(clientfd);
             }
-        }
-        break;
-        case 2: // register业务
-        {
+        } else if (choice == 2) { // register业务
             char name[50] = {0};
             char pwd[50] = {0};
             cout << "username:";
@@ -154,18 +149,14 @@ int main(int argc, char **argv) {
             }
             
             sem_wait(&rwsem); // 等待信号量，子线程处理完注册消息会通知
-        }
-        break;
-        case 3: // quit业务
+        } else if (choice == 3) { // quit业务
             close(clientfd);
             sem_destroy(&rwsem);
             exit(0);
-        default:
+        } else {
             cerr << "invalid input!" << endl;
-            break;
         }
     }
-
     return 0;
 }
 
@@ -277,13 +268,13 @@ void readTaskHandler(int clientfd) {
         int msgtype = js["msgid"].get<int>();
         if (ONE_CHAT_MSG == msgtype) {
             cout << js["time"].get<string>() << " [" << js["id"] << "]" << js["name"].get<string>()
-                 << " said: " << js["msg"].get<string>() << endl;
+                    << " said: " << js["msg"].get<string>() << endl;
             continue;
         }
 
         if (GROUP_CHAT_MSG == msgtype) {
             cout << "群消息[" << js["groupid"] << "]:" << js["time"].get<string>() << " [" << js["id"] << "]" << js["name"].get<string>()
-                 << " said: " << js["msg"].get<string>() << endl;
+                    << " said: " << js["msg"].get<string>() << endl;
             continue;
         }
 
@@ -347,7 +338,8 @@ unordered_map<string, string> commandMap = {
     {"creategroup", "创建群组，格式creategroup:groupname:groupdesc"},
     {"addgroup", "加入群组，格式addgroup:groupid"},
     {"groupchat", "群聊，格式groupchat:groupid:message"},
-    {"loginout", "注销，格式loginout"}};
+    {"loginout", "注销，格式loginout"}
+};
 
 // 注册系统支持的客户端命令处理
 unordered_map<string, function<void(int, string)>> commandHandlerMap = {
@@ -357,7 +349,8 @@ unordered_map<string, function<void(int, string)>> commandHandlerMap = {
     {"creategroup", creategroup},
     {"addgroup", addgroup},
     {"groupchat", groupchat},
-    {"loginout", loginout}};
+    {"loginout", loginout}
+};
 
 // 主聊天页面程序
 void mainMenu(int clientfd) {
