@@ -17,7 +17,7 @@ using namespace muduo::net;
 #include "json.hpp"
 using json = nlohmann::json;
 
-// 表示处理消息的事件回调方法类型
+// 处理消息事件的回调方法类型
 using MsgHandler = std::function<void(const TcpConnectionPtr &conn, json &js, Timestamp)>;
 
 // 聊天服务器业务类
@@ -25,25 +25,25 @@ class ChatService {
 public:
     // 获取单例对象的接口函数
     static ChatService *instance();
-    // 处理登录业务
+    // 登录
     void login(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 处理注册业务
+    // 注册
     void reg(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 一对一聊天业务
+    // 一对一聊天
     void oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 添加好友业务
+    // 添加好友
     void addFriend(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 创建群组业务
+    // 创建群组
     void createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 加入群组业务
+    // 加入群组
     void addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 群组聊天业务
+    // 群组聊天
     void groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 处理注销业务
+    // 注销
     void loginout(const TcpConnectionPtr &conn, json &js, Timestamp time);
-    // 处理客户端异常退出
+    // 客户端异常退出
     void clientCloseException(const TcpConnectionPtr &conn);
-    // 服务器异常，业务重置方法
+    // 服务器异常重置
     void reset();
     // 获取消息对应的处理器
     MsgHandler getHandler(int msgid);
