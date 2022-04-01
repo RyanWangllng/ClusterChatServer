@@ -50,8 +50,8 @@ void ChatServer::onMessage(const TcpConnectionPtr &conn,
     // 数据的反序列化
     json js = json::parse(buf);
     
-    // 达到的目的：完全解耦网络模块的代码和业务模块的代码
-    // 通过js["msgid"] 获取=》业务handler=》conn  js  time
+    // 解耦网络模块的代码和业务模块的代码
+    // 通过js["msgid"] 获取业务handler -> conn  js  time
     auto msgHandler = ChatService::instance()->getHandler(js["msgid"].get<int>());
     // 回调消息绑定好的事件处理器，来执行相应的业务处理
     msgHandler(conn, js, time);
