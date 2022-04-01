@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(chat)
 
 # 配置编译选项
+# add_compile_options(-std=c++11)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -g)
 
 # 配置最终的可执行文件输出的路径
@@ -14,6 +15,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include/server/db)
 include_directories(${PROJECT_SOURCE_DIR}/include/server/model)
 include_directories(${PROJECT_SOURCE_DIR}/include/server/redis)
 include_directories(${PROJECT_SOURCE_DIR}/3rd)
+# link_directories(/usr/lib/mysql)
 
 # 加载子目录
 add_subdirectory(src)
