@@ -32,6 +32,28 @@ sudo apt-get install nginx
 # Redis安装
 sudo apt-get install redis-server
 ```
+### Nginx均衡负载（TCP）配置
+```bash
+cd /etc/nginx/
+vim nginx.conf
+#在events和http中间添加
+stream {
+        upstream MyServer {
+                server 127.0.0.1:6000 weight=1 max_fails=3 fail_timeout=30s;
+                server 127.0.0.1:6002 weight=1 max_fails=3 fail_timeout=30s;
+        }
+
+        server {
+                proxy_connect_timeout 1s;
+                proxy_timeout 3s;
+                listen 8000;
+                proxy_pass MyServer;
+                tcp_nodelay on;
+        }
+}
+cd /usr/sbin/
+./nginx -s reload # 平滑重启
+```
 ### 安装编译
 ```bash
 git clone git@github.com:RyanWangllng/ClusterChatServer.git
