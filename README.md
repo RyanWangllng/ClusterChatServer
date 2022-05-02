@@ -18,7 +18,7 @@ sudo apt install g++ cmake make libboost-dev
 git clone git@github.com:chenshuo/muduo.git
 cd muduo
 ./build.sh # 构建
-./build.sh install # 将库文件和头文件安装到默认搜索路径下
+sudo ./build.sh install # 将库文件和头文件安装到默认搜索路径下
 mv muduo/ /usr/include # muduo文件夹在build/release-install-cpp11/include路径下
 mv * /usr/local/lib # 将build/release-install-cpp11/lib下的文件全部移动到系统目录下
 
@@ -31,7 +31,46 @@ sudo apt-get install nginx
 
 # Redis安装
 sudo apt-get install redis-server
+
+# hiredis安装
+wget https://github.com/redis/hiredis/archive/v0.14.0.tar.gz
+tar -xzf v0.14.0.tar.gz
+cd hiredis-0.14.0/
+make
+sudo make install
+sudo cp /usr/local/lib/libhiredis.so.0.14 /usr/lib/ # 将动态库移动到系统目录下
 ```
+### 数据库表
+##### User
+字段 |类型 |约束
+---|---|---
+id | int | primary key/auto_increment
+name | varchar(50) | not null/unique
+password | varchar(50) | not null
+state | enum('online','offline') | default 'offline'
+##### Friend
+字段 |类型 |约束
+---|---|---
+userid | int | not null/union primary key
+friendid | int | not null/union primary key
+##### AllGroup
+字段 |类型 |约束
+---|---|---
+id | int | primary key/auto_increment
+groupname | varchar(50) | not null/unique
+groupdesc | varchar(200) | default ''
+##### GroupUser
+字段 |类型 |约束
+---|---|---
+groupid | int | not null/union primary key
+userid | int | not null/union primary key
+grouprole | enum('creator','normal') | default 'normal'
+##### OfflineMessage
+字段 |类型 |约束
+---|---|---
+userid | int | not null
+message | varchar(500) | not null
+
 ### Nginx均衡负载（TCP）配置
 ```bash
 cd /etc/nginx/
