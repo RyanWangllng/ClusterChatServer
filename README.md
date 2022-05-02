@@ -100,3 +100,7 @@ cd ClusterChatServer/build/
 cmake ..
 make # 编译好的文件在bin目录底下
 ```
+### Library
+- https://github.com/chenshuo/muduo
+- https://github.com/nlohmann/json
+- https://github.com/redis/hiredis
