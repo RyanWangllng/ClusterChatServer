@@ -1,4 +1,4 @@
-### 设计技术：
+### 涉及技术：
 - C++11、多线程、CMake
 - JSON、muduo
 - MySQL、Redis、Nginx
