@@ -2,7 +2,7 @@
 - C++11、多线程、CMake
 - JSON、muduo
 - MySQL、Redis、Nginx
-### 服务器结构：
+### 服务器架构：
 - 网络模块  
     > 采用muduo网络库实现。
 - 业务模块  
